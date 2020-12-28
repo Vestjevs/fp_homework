@@ -542,11 +542,11 @@ part3 = do
 
 
 part4 = do
-    print "Task 1, input two integers:"
+    print "Task 1, input two integers: "
     apb
-    print "Task 2, input integers until 0:"
+    print "Task 2, input integers until 0: "
     whileNotZero
-    print "Task 3, input two integers:"
+    print "Task 3, input two integers: "
     fakeRandom
     print "Task 4"
     runFS (Directory "Homework" [File "hw_1" "smth", File "hw_2" "smth", Directory "labs" [File "haskell" "print \"Hello, @TheLesbianManGirl!\""]])
