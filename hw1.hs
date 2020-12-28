@@ -190,14 +190,14 @@ addFarRight :: Ord a => Tree a -> Tree a -> Tree a
 addFarRight _subtree EmptyTree = _subtree
 addFarRight _subtree (TreeValue a _left _center _right) = TreeValue a _left _center (addFarLeft _subtree _right)
 
-delete :: Ord a => a -> Tree a -> Tree a
-delete val EmptyTree = EmptyTree
-delete val (TreeValue a _left _center _right) =
+deleteTree :: Ord a => a -> Tree a -> Tree a
+deleteTree val EmptyTree = EmptyTree
+deleteTree val (TreeValue a _left _center _right) =
     if val == a then addFarRight _right (addFarLeft _left _center)
     else TreeValue a
-        (delete val _left)
-        (delete val _center)
-        (delete val _right)
+        (deleteTree val _left)
+        (deleteTree val _center)
+        (deleteTree val _right)
 
 maxTree :: Ord a => Tree a -> Maybe a
 maxTree EmptyTree = Nothing
@@ -208,25 +208,25 @@ maxTree (TreeValue a _ _center _right) =
             Just centerMax -> Just (max centerMax a)
             Nothing -> Just a
 
-add :: Ord a => a -> Tree a -> Tree a
-add val EmptyTree = justValue val
-add val (TreeValue a _left _center _right)
+addTree :: Ord a => a -> Tree a -> Tree a
+addTree val EmptyTree = justValue val
+addTree val (TreeValue a _left _center _right)
   | val < a
   = case maxTree _left of
       Just _leftMax
         -> if _leftMax > val then
-               TreeValue a (add val _left) _center _right
+               TreeValue a (addTree val _left) _center _right
            else
-               TreeValue a _left (add val _center) _right
-      Nothing -> TreeValue a (add val _left) _center _right
+               TreeValue a _left (addTree val _center) _right
+      Nothing -> TreeValue a (addTree val _left) _center _right
   | val > a
   = case maxTree _center of
       Just centerMax
         -> if centerMax > val then
-               TreeValue a _left (add val _center) _right
+               TreeValue a _left (addTree val _center) _right
            else
-               TreeValue a _left _center (add val _right)
-      Nothing -> TreeValue a _left _center (add val _right)
+               TreeValue a _left _center (addTree val _right)
+      Nothing -> TreeValue a _left _center (addTree val _right)
   | otherwise = TreeValue a _left _center _right
 
 
@@ -504,15 +504,15 @@ part3 = do
     print (seek 1 (TreeValue 2 (justValue 7) EmptyTree (justValue 1)))
 
     print "Task 3"
-    print (delete 2 (justValue 2))
-    print (delete 10 EmptyTree)
-    print (delete 9 (TreeValue 2 (justValue 1) EmptyTree (justValue 9)))
-    print (delete 2 (TreeValue 2 (justValue 1) EmptyTree (justValue 9)))
+    print (deleteTree 2 (justValue 2))
+    print (deleteTree 10 EmptyTree)
+    print (deleteTree 9 (TreeValue 2 (justValue 1) EmptyTree (justValue 9)))
+    print (deleteTree 2 (TreeValue 2 (justValue 1) EmptyTree (justValue 9)))
 
     print "Task 4"
-    print (add 2 EmptyTree)
-    print (add 10 (justValue 1))
-    print (add 3 (add 1 (add 10 (justValue 7))))
+    print (addTree 2 EmptyTree)
+    print (addTree 10 (justValue 1))
+    print (addTree 3 (addTree 1 (addTree 10 (justValue 7))))
 
     print "Task 8"
     print (natSum (S Z) (S Z))
